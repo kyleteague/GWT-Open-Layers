@@ -1,0 +1,112 @@
+<!doctype html>
+<!-- The DOCTYPE declaration above will set the     -->
+<!-- browser's rendering engine into                -->
+<!-- "Standards Mode". Replacing this declaration   -->
+<!-- with a "Quirks Mode" doctype is not supported. -->
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <!--                                                               -->
+    <!-- Consider inlining CSS to reduce the number of requested files -->
+    <!--                                                               -->
+    <link type="text/css" rel="stylesheet" href="GWT_Open_Layers.css">
+    <!--                                           -->
+    <!-- Any title is fine                         -->
+    <!--                                           -->
+    <title>Web Application Starter Project</title>
+    
+    <!--                                           -->
+    <!-- This script loads your compiled module.   -->
+    <!-- If you add any GWT meta tags, they must   -->
+    <!-- be added before this line.                -->
+    <!--                                           -->
+    <script type="text/javascript" language="javascript" src="gwt_open_layers/gwt_open_layers.nocache.js"></script>
+    <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+    <script src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+    
+    <script>	  
+		import 'ol/ol.css';
+		import GeoJSON from 'ol/format/GeoJSON';
+		import Map from 'ol/Map';
+		import VectorSource from 'ol/source/Vector';
+		import View from 'ol/View';
+		import {Fill, Style} from 'ol/style';
+		
+		document.getElementById('export-png').addEventListener('click', function () {
+		  map.once('rendercomplete', function () {
+		    const mapCanvas = document.createElement('canvas');
+		    const size = map.getSize();
+		    mapCanvas.width = size[0];
+		    mapCanvas.height = size[1];
+		    const mapContext = mapCanvas.getContext('2d');
+		    Array.prototype.forEach.call(
+		      map.getViewport().querySelectorAll('.ol-layer canvas, canvas.ol-layer'),
+		      function (canvas) {
+		        if (canvas.width > 0) {
+		          const opacity = canvas.parentNode.style.opacity || canvas.style.opacity;
+		          mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
+		
+		          const backgroundColor = canvas.parentNode.style.backgroundColor;
+		          if (backgroundColor) {
+		            mapContext.fillStyle = backgroundColor;
+		            mapContext.fillRect(0, 0, canvas.width, canvas.height);
+		          }
+		
+		          let matrix;
+		          const transform = canvas.style.transform;
+		          if (transform) {
+		            // Get the transform parameters from the style's transform matrix
+		            matrix = transform
+		              .match(/^matrix\(([^\(]*)\)$/)[1]
+		              .split(',')
+		              .map(Number);
+		          } else {
+		            matrix = [
+		              parseFloat(canvas.style.width) / canvas.width,
+		              0,
+		              0,
+		              parseFloat(canvas.style.height) / canvas.height,
+		              0,
+		              0,
+		            ];
+		          }
+		          // Apply the transform to the export map context
+		          CanvasRenderingContext2D.prototype.setTransform.apply(
+		            mapContext,
+		            matrix
+		          );
+		          mapContext.drawImage(canvas, 0, 0);
+		        }
+		      }
+		    );
+		    mapContext.globalAlpha = 1;
+		    if (navigator.msSaveBlob) {
+		      // link download attribute does not work on MS browsers
+		      navigator.msSaveBlob(mapCanvas.msToBlob(), 'map.png');
+		    } else {
+		      const link = document.getElementById('image-download');
+		      link.href = mapCanvas.toDataURL();
+		      link.click();
+		    }
+		  });
+		  map.renderSync();
+		});
+	</script>
+    
+  </head>
+
+  <body>
+	  <a id="export-png" class="btn btn-default"><i class="fa fa-download"></i> Download PNG</a>
+	  <a id="image-download" download="map.png"></a>
+	  
+	  <div id="gwtroot">
+	  </div>
+  
+	  <div id="jsroot">
+	  	<canvas id="staticmap" width="700" height="600" style="border:1px solid"></canvas>
+	  </div>
+	   
+  </body>
+</html>
