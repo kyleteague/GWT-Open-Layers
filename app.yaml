@@ -1,12 +1,12 @@
 name: GWTOpenLayers
 region: nyc
 services:
-  - name: web
+  name: web
   github:
-  repo: kyleteague/GWT-Open-Layers
-  branch: main
+    repo: kyleteague/GWT-Open-Layers
+    branch: main
   run_command: java -jar webapp-runner.jar OpenLayers.war
   instance_size_slug: apps-s-1vcpu-1gb
   instance_count: 1
   routes:
-  - path: /
+    - path: /
