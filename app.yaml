@@ -1,15 +1,12 @@
-spec:
-  name: GWTOpenLayers
-  region: nyc
-  services:
+name: GWTOpenLayers
+region: nyc
+services:
   - name: web
-    github:
-      repo: kyleteague/GWT-Open-Layers
-      branch: main
-      # You might need to set 'deploy_on_push: true' via the control panel or doctl
-    # build_command: ./mvnw clean install
-    run_command: java -jar webapp-runner.jar OpenLayers.war
-    instance_size_slug: apps-s-1vcpu-1gb
-    instance_count: 1
-    routes:
-    - path: /
+  github:
+  repo: kyleteague/GWT-Open-Layers
+  branch: main
+  run_command: java -jar webapp-runner.jar OpenLayers.war
+  instance_size_slug: apps-s-1vcpu-1gb
+  instance_count: 1
+  routes:
+  - path: /
