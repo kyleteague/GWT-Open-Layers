@@ -1,12 +1,13 @@
-name: GWTOpenLayers
+name: gwtopenlayers
 region: nyc
 services:
-  name: web
-  github:
-    repo: kyleteague/GWT-Open-Layers
-    branch: main
-  run_command: java -jar webapp-runner.jar OpenLayers.war
-  instance_size_slug: apps-s-1vcpu-1gb
-  instance_count: 1
-  routes:
-    - path: /
+  - name: website
+    github:
+      branch: main
+      repo: kyleteague/GWT-Open-Layers
+      deploy_on_push: false
+    run_command: java -jar webapp-runner.jar OpenLayers.war
+    instance_size_slug: apps-s-1vcpu-1gb
+    instance_count: 1
+    routes:
+      - path: /

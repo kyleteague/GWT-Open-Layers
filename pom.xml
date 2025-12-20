@@ -11,5 +11,28 @@
 
   <name>gwtopenlayers</name>
   <url>https://github.com/kyleteague/GWT-Open-Layers</url>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.6.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>com.example.Main</mainClass>
+          <arguments>
+            <argument>argument1</argument>
+          </arguments>
+       </configuration>
+      </plugin>
+    </plugins>
+  </build>
   
 </project>
