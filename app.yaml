@@ -1,13 +1,24 @@
+alerts:
+- rule: DEPLOYMENT_FAILED
+- rule: DOMAIN_FAILED
+features:
+- buildpack-stack=ubuntu-22
+ingress:
+  rules:
+  - component:
+      name: website
+    match:
+      path:
+        prefix: /
 name: gwtopenlayers
 region: nyc
 services:
-  - name: website
-    github:
-      branch: main
-      repo: kyleteague/GWT-Open-Layers
-      deploy_on_push: false
-    run_command: java -jar webapp-runner.jar OpenLayers.war
-    instance_size_slug: apps-s-1vcpu-1gb
-    instance_count: 1
-    routes:
-      - path: /
+- environment_slug: JVM
+  github:
+    branch: main
+    deploy_on_push: false
+    repo: kyleteague/GWT-Open-Layers
+  http_port: 8080
+  instance_count: 1
+  instance_size_slug: apps-s-1vcpu-1gb
+  run_command: java -jar webapp-runner.jar OpenLayers.war
